@@ -19,15 +19,16 @@ doc = Nokogiri::HTML(open('data/talks.html'))
 CSV.open("data/talks.csv", "wb") do |csv|
 doc.xpath('//div[@class="contents"]/ul[1]/li').each do |talk|
 	title = talk.children[1].content
-	namesArray = talk.children[2].content.delete(',').split(' ').reject{|elem| elem.eql?('by') or elem.eql?('administered') or elem.eql?('and')}
-	name = namesArray.slice!(0, 2)
-	namesTemp = []
-	until name.nil? or name.empty?
- 		namesTemp << name.join(' ') 
- 		name = namesArray.slice!(0, 2)
- 		end
- 	names = namesTemp.join('#')
- 	csv << [title, names]
+	speakers = talk.children[2].content.split(' ').reject{|elem| elem.eql?('by') or elem.eql?('administered')}.join(' ')
+	#namesArray = talk.children[2].content.delete(',').split(' ').reject{|elem| elem.eql?('by') or elem.eql?('administered') or elem.eql?('and')}
+	#name = namesArray.slice!(0, 2)
+	#namesTemp = []
+	#until name.nil? or name.empty?
+ 	#	namesTemp << name.join(' ') 
+ 	#	name = namesArray.slice!(0, 2)
+ 	#	end
+ 	#names = namesTemp.join('#')
+ 	csv << [title, speakers]
 	end
 	end
 # 
