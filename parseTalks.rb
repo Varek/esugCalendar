@@ -20,6 +20,8 @@ CSV.open("data/talks.csv", "wb") do |csv|
 doc.xpath('//div[@class="contents"]/ul[1]/li').each do |talk|
 	title = talk.children[1].content
 	speakers = talk.children[2].content.split(' ').reject{|elem| elem.eql?('by') or elem.eql?('administered')}.join(' ')
+	url = talk.children[1].[]('href')
+	url = url[0,url.index('?')]
 	#namesArray = talk.children[2].content.delete(',').split(' ').reject{|elem| elem.eql?('by') or elem.eql?('administered') or elem.eql?('and')}
 	#name = namesArray.slice!(0, 2)
 	#namesTemp = []
@@ -28,7 +30,7 @@ doc.xpath('//div[@class="contents"]/ul[1]/li').each do |talk|
  	#	name = namesArray.slice!(0, 2)
  	#	end
  	#names = namesTemp.join('#')
- 	csv << [title, speakers]
+ 	csv << [title, speakers, url ]
 	end
 	end
 # 
